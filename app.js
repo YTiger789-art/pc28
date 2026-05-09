@@ -17,10 +17,7 @@ let autoMode = true;
 let history = [];
 
 function fmtTime(ts) { return new Date(ts).toLocaleString('zh-CN', { hour12: false }); }
-
-function renderBalls(nums = ['-', '-', '-'], sum = '-') {
-  ballWrap.innerHTML = `<span class="ball">${nums[0]}</span><span class="op">+</span><span class="ball">${nums[1]}</span><span class="op">+</span><span class="ball">${nums[2]}</span><span class="op">=</span><span class="sum">${sum}</span>`;
-}
+function renderBalls(nums = ['-', '-', '-'], sum = '-') { ballWrap.innerHTML = `<span class="ball">${nums[0]}</span><span class="op">+</span><span class="ball">${nums[1]}</span><span class="op">+</span><span class="ball">${nums[2]}</span><span class="op">=</span><span class="sum">${sum}</span>`; }
 
 function renderStats() {
   const total = history.length;
@@ -35,10 +32,7 @@ function renderStats() {
 
 function renderHistory() {
   const key = searchIssueEl.value.trim();
-  const rows = history
-    .filter((r) => (key ? r.issue.includes(key) : true))
-    .map((r) => `<tr><td>${r.issue}</td><td>${r.nums.join(' + ')}</td><td>${r.sum}</td><td><span class="tag ${r.result === '大' ? 'big' : 'small'}">${r.result}</span></td><td>${fmtTime(r.time)}</td></tr>`)
-    .join('');
+  const rows = history.filter((r) => (key ? r.issue.includes(key) : true)).map((r) => `<tr><td>${r.issue}</td><td>${r.nums.join(' + ')}</td><td>${r.sum}</td><td><span class="tag ${r.result === '大' ? 'big' : 'small'}">${r.result}</span></td><td>${fmtTime(r.time)}</td></tr>`).join('');
   historyBody.innerHTML = rows || '<tr><td colspan="5" class="empty">暂无数据</td></tr>';
 }
 
@@ -56,8 +50,8 @@ async function refreshHistory() {
   if (history.length) renderBalls(history[0].nums, history[0].sum);
 }
 
-async function drawOnce() {
-  await fetch('/api/draw', { method: 'POST' });
+async function drawOnce(mode = 'auto') {
+  await fetch(`/api/draw?mode=${mode}`, { method: 'POST' });
   countdown = DRAW_INTERVAL_SECONDS;
   await refreshHistory();
   await refreshStatus();
@@ -81,11 +75,9 @@ function exportJson() {
   URL.revokeObjectURL(a.href);
 }
 
-el('drawNow').addEventListener('click', drawOnce);
-el('toggleAuto').addEventListener('click', () => {
-  autoMode = !autoMode;
-  el('toggleAuto').textContent = autoMode ? '暂停自动' : '恢复自动';
-});
+el('drawNow').addEventListener('click', () => drawOnce('auto'));
+el('drawExternal').addEventListener('click', () => drawOnce('external'));
+el('toggleAuto').addEventListener('click', () => { autoMode = !autoMode; el('toggleAuto').textContent = autoMode ? '暂停自动' : '恢复自动'; });
 el('resetData').addEventListener('click', resetAll);
 el('exportJson').addEventListener('click', exportJson);
 searchIssueEl.addEventListener('input', renderHistory);
@@ -93,7 +85,7 @@ searchIssueEl.addEventListener('input', renderHistory);
 setInterval(async () => {
   if (!autoMode) return;
   countdown -= 1;
-  if (countdown <= 0) await drawOnce();
+  if (countdown <= 0) await drawOnce('auto');
   else countdownEl.textContent = `${countdown}s`;
 }, 1000);
 
