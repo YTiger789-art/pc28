@@ -32,8 +32,46 @@ function renderStats() {
 
 function renderHistory() {
   const key = searchIssueEl.value.trim();
-  const rows = history.filter((r) => (key ? r.issue.includes(key) : true)).map((r) => `<tr><td>${r.issue}</td><td>${r.nums.join(' + ')}</td><td>${r.sum}</td><td><span class="tag ${r.result === '大' ? 'big' : 'small'}">${r.result}</span></td><td>${fmtTime(r.time)}</td></tr>`).join('');
-  historyBody.innerHTML = rows || '<tr><td colspan="5" class="empty">暂无数据</td></tr>';
+  const rows = history.filter((r) => (key ? String(r.issue || '').includes(key) : true));
+  historyBody.innerHTML = '';
+
+  if (!rows.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    td.className = 'empty';
+    td.textContent = '暂无数据';
+    tr.appendChild(td);
+    historyBody.appendChild(tr);
+    return;
+  }
+
+  rows.forEach((r) => {
+    const tr = document.createElement('tr');
+
+    const issueTd = document.createElement('td');
+    issueTd.textContent = String(r.issue ?? '');
+
+    const numsTd = document.createElement('td');
+    const safeNums = Array.isArray(r.nums) ? r.nums : [];
+    numsTd.textContent = safeNums.join(' + ');
+
+    const sumTd = document.createElement('td');
+    sumTd.textContent = String(r.sum ?? '');
+
+    const resultTd = document.createElement('td');
+    const tag = document.createElement('span');
+    const isBig = r.result === '大';
+    tag.className = `tag ${isBig ? 'big' : 'small'}`;
+    tag.textContent = String(r.result ?? '');
+    resultTd.appendChild(tag);
+
+    const timeTd = document.createElement('td');
+    timeTd.textContent = fmtTime(r.time);
+
+    tr.append(issueTd, numsTd, sumTd, resultTd, timeTd);
+    historyBody.appendChild(tr);
+  });
 }
 
 async function refreshStatus() {
