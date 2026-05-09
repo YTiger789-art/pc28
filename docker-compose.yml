@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  pc28:
+    build: .
+    container_name: pc28-system
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - EXTERNAL_API_ENABLED=false
+      - EXTERNAL_API_URL=
+      - EXTERNAL_API_METHOD=GET
+      - EXTERNAL_API_ISSUE_FIELD=issue
+      - EXTERNAL_API_NUMS_FIELD=nums
+      - EXTERNAL_API_SUM_FIELD=sum
+      - EXTERNAL_API_RESULT_FIELD=result
+    restart: unless-stopped

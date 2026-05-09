@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC28 开奖结果系统（增强版）</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>PC28 开奖结果系统</h1>
+    <p>含开奖控制、历史记录、统计分析与导出功能（演示版）</p>
+  </header>
+
+  <main class="container">
+    <section class="card panel">
+      <h2>当前开奖</h2>
+      <div class="field"><span>当前期号</span><strong id="issueNo">-</strong></div>
+      <div class="field"><span>开奖时间</span><strong id="drawAt">-</strong></div>
+      <div class="balls" id="ballWrap"></div>
+      <div class="field"><span>倒计时</span><strong id="countdown">-</strong></div>
+      <div class="actions">
+        <button id="drawNow">本地开奖</button>
+        <button id="drawExternal" class="secondary">外部API开奖</button>
+        <button id="toggleAuto" class="secondary">暂停自动</button>
+        <button id="resetData" class="ghost">清空数据</button>
+      </div>
+      <p class="hint">规则：随机 3 位 0-9 数字求和；和值 ≥14 为“大”，否则为“小”。</p>
+    </section>
+
+    <section class="card stats">
+      <h2>统计面板</h2>
+      <div class="stat-grid">
+        <div class="stat"><b id="totalCount">0</b><span>总开奖数</span></div>
+        <div class="stat"><b id="bigCount">0</b><span>大</span></div>
+        <div class="stat"><b id="smallCount">0</b><span>小</span></div>
+        <div class="stat"><b id="avgSum">0.00</b><span>平均和值</span></div>
+      </div>
+      <div class="actions">
+        <button id="exportJson" class="secondary">导出 JSON</button>
+      </div>
+    </section>
+
+    <section class="card history">
+      <div class="history-head">
+        <h2>历史开奖</h2>
+        <input id="searchIssue" type="text" placeholder="按期号搜索，如 20260509-0003" />
+      </div>
+      <table>
+        <thead>
+        <tr><th>期号</th><th>号码</th><th>和值</th><th>结果</th><th>时间</th></tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
