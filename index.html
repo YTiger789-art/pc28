@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC28 开奖结果系统</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>PC28 开奖结果系统</h1>
+    <p>参考常见 PC20/PC28 展示风格，提供当前期号、倒计时、和值与历史记录。</p>
+  </header>
+
+  <main class="container">
+    <section class="card current">
+      <div class="row">
+        <span>当前期号</span>
+        <strong id="issueNo">-</strong>
+      </div>
+      <div class="row balls" id="ballWrap">
+        <span class="ball">-</span>
+        <span class="plus">+</span>
+        <span class="ball">-</span>
+        <span class="plus">+</span>
+        <span class="ball">-</span>
+        <span class="eq">=</span>
+        <span class="sum" id="sumNum">-</span>
+      </div>
+      <div class="row">
+        <span>开奖倒计时</span>
+        <strong id="countdown">30</strong>
+      </div>
+      <div class="row actions">
+        <button id="drawNow">立即开奖</button>
+        <button id="resetData" class="ghost">清空记录</button>
+      </div>
+    </section>
+
+    <section class="card history">
+      <h2>历史开奖</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>期号</th>
+            <th>号码</th>
+            <th>和值</th>
+            <th>结果</th>
+            <th>时间</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
