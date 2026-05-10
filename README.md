@@ -84,3 +84,17 @@ bash scripts/push_to_github.sh git@github.com:yourname/pc28-system.git main
 - `npm ci`
 - `node --check server.js`
 - `node --check app.js`
+
+
+## 部署到 GitHub Pages
+
+> GitHub Pages 仅支持静态页面，不运行 Node/Express。项目已内置“静态回退模式”：无法访问 `/api/*` 时，自动切到浏览器本地模式（localStorage 保存记录）。
+
+### 启用步骤
+1. 推送代码到 GitHub 仓库（`main` 或 `master`）。
+2. 在仓库 `Settings -> Pages` 中，Source 选择 `GitHub Actions`。
+3. 工作流 `.github/workflows/deploy-pages.yml` 会自动发布。
+
+### 页面能力说明（Pages）
+- 可用：本地开奖、自动开奖、历史、统计、导出 JSON。
+- 不可用：外部 API 开奖、Express 后端接口。
