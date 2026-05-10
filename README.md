@@ -60,3 +60,27 @@ docker compose up -d --build
 
 ## 说明
 当前默认为本地模拟开奖；开启外部 API 后可与其他平台开奖结果对接。
+
+
+## 部署到 GitHub（本地推送）
+
+### 1) 本地准备
+```bash
+git status
+```
+确保没有未提交修改，然后创建 GitHub 空仓库（不要勾选 README 初始化）。
+
+### 2) 本地一键推送到 GitHub
+```bash
+bash scripts/push_to_github.sh <你的GitHub仓库地址> main
+```
+示例：
+```bash
+bash scripts/push_to_github.sh git@github.com:yourname/pc28-system.git main
+```
+
+### 3) 使用 GitHub Actions 自动检查
+仓库已包含 `.github/workflows/node-ci.yml`，推送后会自动执行：
+- `npm ci`
+- `node --check server.js`
+- `node --check app.js`
